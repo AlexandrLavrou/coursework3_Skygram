@@ -31,8 +31,6 @@ class PostsDAO:
     def get_posts_by_user(self, user_name):
         """
         возвращает посты определенного пользователя.
-        Функция должна вызывать ошибку ValueError если такого пользователя нет
-        и пустой список, если у пользователя нет постов
         """
         posts = self.get_all()
 
@@ -53,22 +51,25 @@ class PostsDAO:
                 posts_filtered.append(post)
         return posts_filtered
 
-    def search_for_hash(self, hash_tag):
-        """
-        Возвращает
-        :param hash_tag:
-        :return:
-        """
-        pass
+    # def search_for_hash(self):
+    #     """
+    #     Возвращает посты с #
+    #     :return:
+    #     """
+    #     posts = self.get_all()
+    #     posts_with_hash = []
+    #     for post in posts:
+    #         post_by_list = post["content"].split(" ")
+    #         new_list = []
+    #         for word in post_by_list:
+    #             if word[0] == "#":
+    #                 word = "fuck"
+    #             post_by_list = " ".join(word)
+    #
+    #                 word = f"<a href='/tag/food'>{{ post_by_list }}</a>"
+    #
+    #         #     post["content"] = " ".join(post_by_list)
+    #         # posts_with_hash.append(post)
+    #     return post_by_list
+    #         # posts_with_hash
 
-    def get_posts_by_user(user_name):
-        """возвращает посты определенного пользователя.
-        Функция должна вызывать ошибку ValueError если такого пользователя нет
-        и пустой список, если у пользователя нет постов"""
-        pass
-
-    def get_comments_by_post_id(post_id):
-        """возвращает комментарии определенного поста.
-        Функция должна вызывать ошибку ValueError если такого поста нет
-        и пустой список, если у поста нет комментов. """
-        pass

@@ -1,6 +1,7 @@
 import logging
+from json import JSONDecodeError
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, abort
 from app.posts.dao.posts_dao import PostsDAO
 from app.posts.dao.comments_dao import CommentsDAO
 
@@ -27,11 +28,18 @@ def posts_one(post_pk):
     try:
         post = posts_dao.get_post_by_pk(post_pk)
         comments = comments_dao.get_by_post_pk(post_pk)
+    except (JSONDecodeError, FileNotFoundError) as error:
+        return render_template("error.html", error=error)
+    else:
+        if post is None:
+            abort(404)
         comment_count = len(comments)
         return render_template("post.html", post=post, comments=comments, comment_count=comment_count)
-    except:
-        return "Something went wrong with getting post"
 
+@post_blueprint.errorhandler(404)
+def post_error(error):
+
+    return render_template("error.html", error=error), 404
 
 @post_blueprint.route("/search/")
 def posts_search():
@@ -44,10 +52,16 @@ def posts_search():
     return render_template("search.html", posts_found=posts_found, posts_count=posts_count)
 
 
-@post_blueprint.route("/users/<username>/")
-def posts_user(username):
+@post_blueprint.route("/users/<user_name>/")
+def posts_user(user_name):
 
-    posts = posts_dao.get_posts_by_user(username)
-    logger.debug(f"Переход на страницу постов:")
+    posts = posts_dao.get_posts_by_user(user_name)
+    logger.debug(f"Переход на страницу постов: {posts}")
 
     return render_template("user-feed.html", posts=posts)
+
+@post_blueprint.route("/tegstaff/")
+def posts_tag():
+    posts = posts_dao.search_for_hash()
+
+    return render_template("tag.html", posts=posts)
