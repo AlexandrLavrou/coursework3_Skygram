@@ -60,8 +60,8 @@ def posts_user(user_name):
 
     return render_template("user-feed.html", posts=posts)
 
-@post_blueprint.route("/tegstaff/")
-def posts_tag():
-    posts = posts_dao.search_for_hash()
-
-    return render_template("tag.html", posts=posts)
+# @post_blueprint.route("/tegstaff/")
+# def posts_tag():
+#     posts = posts_dao.search_for_hash()
+#
+#     return render_template("tag.html", posts=posts)
